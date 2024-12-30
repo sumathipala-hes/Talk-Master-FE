@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { setUser, setToken } from '@/store/slices/authSlice';
 import { Loader2 } from 'lucide-react';
+import { UserRole } from '@/types';
 
 export function Login() {
   const navigate = useNavigate();
@@ -19,11 +20,11 @@ export function Login() {
 
     setTimeout(() => {
       const mockInstructor = {
-        id: '2',
-        email: 'instructor@example.com',
-        name: 'Sarah Johnson',
-        role: 'instructor',
-        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
+        id: "2",
+        email: "instructor@example.com",
+        name: "Sarah Johnson",
+        role: "instructor" as UserRole,
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
       };
 
       dispatch(setUser(mockInstructor));
