@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -17,10 +17,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { user } = useSelector((state: RootState) => state.auth);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  if (!user) {
+  useEffect(() => {
+    if (!user) {
     navigate('/login');
-    return null;
   }
+  }, [user, navigate]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -32,7 +33,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-72">
-            <Sidebar onNavigate={() => setIsMobileMenuOpen(false)} />
+            <Sidebar onNavigate={() => setIsMobileMenuOpen(false)} isMobile={isMobileMenuOpen} />
           </SheetContent>
         </Sheet>
       </Header>
