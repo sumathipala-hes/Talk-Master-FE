@@ -12,7 +12,7 @@ export function HistoryFilters() {
   return (
     <Card>
       <CardContent className="flex flex-wrap gap-4 p-4">
-        <Select>
+        {/* <Select>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Time Period" />
           </SelectTrigger>
@@ -22,7 +22,7 @@ export function HistoryFilters() {
             <SelectItem value="3months">Last 3 Months</SelectItem>
             <SelectItem value="year">Last Year</SelectItem>
           </SelectContent>
-        </Select>
+        </Select> */}
         <Select>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Instructor" />

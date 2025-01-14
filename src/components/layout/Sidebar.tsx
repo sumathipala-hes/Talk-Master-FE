@@ -13,9 +13,10 @@ import { Logo } from '@/components/common/Logo';
 
 interface SidebarProps {
   onNavigate?: () => void;
+  isMobile?: boolean;
 }
 
-export function Sidebar({ onNavigate }: SidebarProps) {
+export function Sidebar({ onNavigate , isMobile}: SidebarProps) {
   const user = useSelector((state: RootState) => state.auth.user);
 
   const navigation = {
@@ -34,18 +35,24 @@ export function Sidebar({ onNavigate }: SidebarProps) {
       { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
       { name: 'Users', href: '/users', icon: Users },
       { name: 'Packages', href: '/packages', icon: Package },
-      { name: 'Sessions', href: '/sessions', icon: Calendar },
     ],
   };
 
-  const links = navigation[user?.role as keyof typeof navigation] || [];
+  const links = navigation[user?.role as keyof typeof navigation] || [
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Packages", href: "/packages", icon: Package },
+    { name: "My Sessions", href: "/sessions", icon: Calendar },
+    { name: "History", href: "/history", icon: History },
+  ];
 
   return (
     <div className="flex h-full flex-col bg-[#0A192F] text-white">
-      <div className="p-6">
-        <Logo />
-      </div>
-      <nav className="flex-1 space-y-1 px-2">
+      {isMobile && (
+        <div className="p-6">
+          <Logo size="fit" />
+        </div>
+      )}
+      <nav className="flex-1 space-y-1 px-2 mt-0 md:mt-10">
         {links.map((item) => (
           <NavLink
             key={item.name}
