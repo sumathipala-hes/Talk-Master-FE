@@ -1,13 +1,14 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { Logo } from '@/components/common/Logo';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { setUser, setToken } from '@/store/slices/authSlice';
-import { Loader2 } from 'lucide-react';
-import { UserRole } from '@/types';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Logo } from "@/components/common/Logo";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { setUser, setToken } from "@/store/slices/authSlice";
+import { Loader2 } from "lucide-react";
+// import { UserRole } from "@/types";
+import axios from "axios";
 
 export function Login() {
   const navigate = useNavigate();
@@ -18,22 +19,44 @@ export function Login() {
     e.preventDefault();
     setIsLoading(true);
 
-    setTimeout(() => {
-      const mockInstructor = {
-         id: '1',
-        firstName: "ss",
-        lastName: "rr",
-        email: "ss@rr",
-        phone_no: "12345",
-        role: "STUDENT" as UserRole,
-        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-      };
+    const username = (document.getElementById("username") as HTMLInputElement).value;
+    const password = (document.getElementById("password") as HTMLInputElement).value;
 
-      dispatch(setUser(mockInstructor));
-      dispatch(setToken('mock-token'));
-      navigate('/dashboard');
+    try {
+      // API call to login
+      const response = await axios.post("/api/login", { username, password });
+
+      const { user, token } = response.data;
+
+      // Dispatch user and token to Redux store
+      dispatch(setUser(user));
+      dispatch(setToken(token));
+
+      // Navigate to dashboard
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Invalid username or password"); // Customize error handling
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
+
+    // setTimeout(() => {
+    //   const mockAdmin = {
+    //     id: "1",
+    //     firstName: "Admin",
+    //     lastName: "User",
+    //     email: "admin@talkmaster.com",
+    //     phone_no: "12345",
+    //     role: "ADMIN" as UserRole,
+    //     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
+    //   };
+
+    //   dispatch(setUser(mockAdmin));
+    //   dispatch(setToken("mock-token"));
+    //   navigate("/dashboard");
+    //   setIsLoading(false);
+    // }, 1000);
   };
 
   return (
@@ -78,7 +101,7 @@ export function Login() {
                 Please wait
               </>
             ) : (
-              'Sign In'
+              "Sign In"
             )}
           </Button>
         </form>
