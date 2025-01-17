@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setUser, setToken } from "@/store/slices/authSlice";
 import { Loader2 } from "lucide-react";
-// import { UserRole } from "@/types";
-import axios from "axios";
+import { UserRole } from "@/types";
 
 export function Login() {
   const navigate = useNavigate();
@@ -19,44 +18,22 @@ export function Login() {
     e.preventDefault();
     setIsLoading(true);
 
-    const username = (document.getElementById("username") as HTMLInputElement).value;
-    const password = (document.getElementById("password") as HTMLInputElement).value;
+    setTimeout(() => {
+      const mockAdmin = {
+        id: "1",
+        firstName: "Admin",
+        lastName: "User",
+        email: "admin@talkmaster.com",
+        phone_no: "12345",
+        role: "ADMIN" as UserRole,
+        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
+      };
 
-    try {
-      // API call to login
-      const response = await axios.post("/api/login", { username, password });
-
-      const { user, token } = response.data;
-
-      // Dispatch user and token to Redux store
-      dispatch(setUser(user));
-      dispatch(setToken(token));
-
-      // Navigate to dashboard
+      dispatch(setUser(mockAdmin));
+      dispatch(setToken("mock-token"));
       navigate("/dashboard");
-    } catch (error) {
-      console.error("Login failed:", error);
-      alert("Invalid username or password"); // Customize error handling
-    } finally {
       setIsLoading(false);
-    }
-
-    // setTimeout(() => {
-    //   const mockAdmin = {
-    //     id: "1",
-    //     firstName: "Admin",
-    //     lastName: "User",
-    //     email: "admin@talkmaster.com",
-    //     phone_no: "12345",
-    //     role: "ADMIN" as UserRole,
-    //     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
-    //   };
-
-    //   dispatch(setUser(mockAdmin));
-    //   dispatch(setToken("mock-token"));
-    //   navigate("/dashboard");
-    //   setIsLoading(false);
-    // }, 1000);
+    }, 1000);
   };
 
   return (
