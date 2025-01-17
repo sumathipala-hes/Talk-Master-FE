@@ -40,6 +40,7 @@ export function Login() {
 
     } catch (error) {
       console.error("Login failed:", error);
+      alert("Login failed. Please try again.");
       
     } finally {
       setIsLoading(false);
