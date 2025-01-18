@@ -6,6 +6,8 @@ import { CredentialsForm } from '@/components/auth/CredentialsForm';
 
 export function Register() {
   const [step, setStep] = useState(1);
+  const [userDetails, setUserDetails] = useState({});
+  
 
   return (
     <div className="min-h-screen bg-[#0A192F] text-white grid md:grid-cols-2 grid-cols-1">
@@ -18,13 +20,16 @@ export function Register() {
                 Hello.
               </h1>
               <p className="text-gray-300 text-center">
-                Enter your personal details and start journey with us
+                Enter your personal details and start your journey with us
               </p>
             </div>
           </div>
           <div className="bg-white/10 p-6 md:p-12 backdrop-blur-lg flex items-center justify-center">
             <div className="max-w-md mx-auto">
-              <RegisterForm onNext={() => setStep(2)} />
+              <RegisterForm
+                setStep={setStep}
+                setUserDetails={setUserDetails}
+              />
             </div>
           </div>
         </>
@@ -36,19 +41,21 @@ export function Register() {
               Welcome!
             </h1>
             <p className="text-gray-300 text-center md:text-left">
-              To keep connected with us please login with your username password
+              To keep connected with us, please choose your password
             </p>
             <Button
               variant="outline"
-              className="border-white/20 hover:bg-white/5 w-full md:w-auto"
+              className="flex-1 text-[#0A192F] hover:bg-slate-300"
               onClick={() => setStep(1)}
             >
               ← PREVIOUS
             </Button>
           </div>
-          <div className="bg-white/10 p-6 md:p-12 backdrop-blur-lg">
+          <div className="bg-white/10 p-6 md:p-12 backdrop-blur-lg ">
             <div className="max-w-md mx-auto">
-              <CredentialsForm onPrevious={() => setStep(1)} />
+              <CredentialsForm
+                userDetails={userDetails}
+              />
             </div>
           </div>
         </>
