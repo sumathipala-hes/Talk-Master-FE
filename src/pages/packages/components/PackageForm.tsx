@@ -9,29 +9,39 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Package } from '@/types';
 
 interface PackageFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: Omit<Package, 'id' | 'isActive'>) => void;
+  onSubmit: (data: Omit<Package, 'id' | 'isActive'>) => Promise<void>;
   initialData?: Package;
   title: string;
 }
 
 export function PackageForm({ open, onOpenChange, onSubmit, initialData, title }: PackageFormProps) {
+  useEffect(() => { 
+    if (initialData) {
+      setFormData({
+        name: initialData.name,
+        description: initialData.description,
+        sessions: initialData.sessions,
+        price: initialData.price,
+      });
+    }
+  }, [initialData]);
   const [formData, setFormData] = useState({
-    name: initialData?.name || '',
-    description: initialData?.description || '',
-    hours: initialData?.hours || 0,
+    name: initialData?.name || "",
+    description: initialData?.description || "",
+    sessions: initialData?.sessions || 0,
     price: initialData?.price || 0,
   });
 
-  const handleSubmit = () => {
-    onSubmit(formData);
+  const handleSubmit = async() => {
+    await onSubmit(formData);
     onOpenChange(false);
-    setFormData({ name: '', description: '', hours: 0, price: 0 });
+    setFormData({ name: "", description: "", sessions: 0, price: 0 });
   };
 
   return (
@@ -46,7 +56,9 @@ export function PackageForm({ open, onOpenChange, onSubmit, initialData, title }
             <Input
               id="name"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
             />
           </div>
           <div className="space-y-2">
@@ -55,16 +67,20 @@ export function PackageForm({ open, onOpenChange, onSubmit, initialData, title }
               id="price"
               type="number"
               value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+              onChange={(e) =>
+                setFormData({ ...formData, price: Number(e.target.value) })
+              }
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="hours">Hours</Label>
+            <Label htmlFor="sessions">sessions</Label>
             <Input
-              id="hours"
+              id="sessions"
               type="number"
-              value={formData.hours}
-              onChange={(e) => setFormData({ ...formData, hours: Number(e.target.value) })}
+              value={formData.sessions}
+              onChange={(e) =>
+                setFormData({ ...formData, sessions: Number(e.target.value) })
+              }
             />
           </div>
           <div className="space-y-2">
@@ -72,7 +88,9 @@ export function PackageForm({ open, onOpenChange, onSubmit, initialData, title }
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
             />
           </div>
         </div>
@@ -81,7 +99,7 @@ export function PackageForm({ open, onOpenChange, onSubmit, initialData, title }
             Cancel
           </Button>
           <Button onClick={handleSubmit}>
-            {initialData ? 'Update' : 'Create'}
+            {initialData ? "Update" : "Create"}
           </Button>
         </DialogFooter>
       </DialogContent>
