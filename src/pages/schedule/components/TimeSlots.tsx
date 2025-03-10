@@ -37,7 +37,7 @@ export function TimeSlots({
     const sessionDate = format(date, "yyyy-MM-dd");
 
     for (let hour = 6; hour < 24; hour++) {
-      for (let minute of [0, 30]) {
+      for (const minute of [0, 30]) {
         // Create the time string in the same format as the session time
         const timeString = `${hour.toString().padStart(2, "0")}:${minute
           .toString()
